@@ -1,0 +1,216 @@
+{if member_group != "1"}
+
+{!-- Redirect to homepage if they're not a logged-in super admin --}
+
+{redirect="{pv_site_url}"}
+
+{/if}<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        
+        <!-- META -->
+        <meta charset="UTF-8">
+        
+        <!-- TITLE -->
+        <title>{site_name} - ExpressionEngine Info</title>
+        
+        <!-- CSS -->
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #FFF;
+            color: #333;
+            font: 13px/1.5 Helvetica;
+            margin: 0 auto;
+            padding: 40px 0;
+            width: 90%;
+        }
+        a {
+            color: blue;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        h1 {
+            font-weight: normal;
+        }
+        h2 {
+            padding: 20px 0 0;
+        }
+        h1, h2, h3, p, ul {
+            margin-bottom: 20px;
+        }
+        table,
+        caption,
+        tbody,
+        tfoot,
+        thead,
+        tr,
+        th,
+        td {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            font-size: 100%;
+            vertical-align: baseline;
+            background: transparent;
+        }
+        table {
+            border: 1px solid #DDD;
+            border-spacing: 0;
+            width: 100%;
+            
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+        }
+        thead {
+            background-color: #DDD;
+        }
+        th {
+            text-align: left;
+        }
+        th, td {
+            padding: 3px 12px;
+        }
+        tr:nth-of-type(even) {
+            background-color: #F6F6F6;
+        }
+        </style>
+        
+    </head>
+    <body>
+        
+        <h1>{site_name} - ExpressionEngine Info</h1>
+        
+        <h2>Templates</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Template Group</th>
+                    <th>Template</th>
+                </tr>
+            </thead>
+            <tbody>
+                {exp:query
+                    sql="SELECT group_name, template_name FROM exp_template_groups, exp_templates WHERE exp_template_groups.group_id = exp_templates.group_id GROUP BY group_order, template_name"
+                }
+                <tr>
+                    <td>{group_name}</td>
+                    <td>{template_name}</td>
+                </tr>
+                {/exp:query}
+            </tbody>
+        </table>
+        
+        <h2>Channels</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Channel Title</th>
+                    <th>Channel Name</th>
+                    <th>Total Entries</th>
+                </tr>
+            </thead>
+            <tbody>
+                {exp:query sql="SELECT channel_title, channel_name, total_entries FROM exp_channels GROUP BY channel_name"}
+                <tr>
+                    <td>{channel_title}</td>
+                    <td>{channel_name}</td>
+                    <td>{total_entries}</td>
+                </tr>
+                {/exp:query}
+            </tbody>
+        </table>
+        
+        <h2>Custom Fields</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Field Group</th>
+                    <th>Field Name</th>
+                    <th>Channel Title</th>
+                    <th>Channel Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {exp:query sql="SELECT group_name, exp_field_groups.group_id, field_name, channel_title, channel_name FROM exp_field_groups, exp_channel_fields, exp_channels WHERE exp_field_groups.group_id = exp_channel_fields.group_id AND exp_field_groups.group_id = exp_channels.field_group"}
+                <tr>
+                    <td>{group_name}</td>
+                    <td>{field_name}</td>
+                    <td>{channel_title}</td>
+                    <td>{channel_name}</td>
+                </tr>
+                {/exp:query}
+            </tbody>
+        </table>
+        
+        <h2>Installed Modules</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Version Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {exp:query sql="SELECT module_name, module_version FROM exp_modules"}
+                <tr>
+                    <td>{module_name}</td>
+                    <td><code>{module_version}</code></td>
+                </tr>
+                {/exp:query}
+            </tbody>
+        </table>
+        
+        <h2>File Upload Folders</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Server Path</th>
+                    <th>URL</th>
+                    <th>Allowed File Types</th>
+                </tr>
+            </thead>
+            <tbody>
+                {exp:query sql="SELECT name, server_path, url, allowed_types FROM exp_upload_prefs"}
+                <tr>
+                    <td>{name}</td>
+                    <td><code>{server_path}</code></td>
+                    <td><code>{url}</code></td>
+                    <td>{allowed_types}</td>
+                </tr>
+                {/exp:query}
+            </tbody>
+        </table>
+        
+        <h2>Members</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Member Group</th>
+                    <th>Screen Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                </tr>
+                <tbody>
+                    {exp:query sql="SELECT username, screen_name, email, group_title FROM exp_members, exp_member_groups WHERE exp_members.group_id = exp_member_groups.group_id GROUP BY group_title"}
+                    <tr>
+                        <td>{group_title}</td>
+                        <td>{screen_name}</td>
+                        <td>{username}</td>
+                        <td><a href="mailto:{email}">{email}</a></td>
+                    </tr>
+                    {/exp:query}
+                </tbody>
+            </thead>
+        </table>
+        
+    </body>
+</html>
