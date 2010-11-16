@@ -1,5 +1,7 @@
 ExpressionEngine 1 & 2 templates to quickly access commonly needed development data w/o needing to access the control panel.
 
+Create a new template group, copy/paste into the templates index file
+
 - Template groups and names
 - Channel information
 - Custom field groups and fields
