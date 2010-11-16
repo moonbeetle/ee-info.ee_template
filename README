@@ -1,0 +1,8 @@
+ExpressionEngine 1 & 2 templates to quickly access commonly needed development data w/o needing to access the control panel.
+
+- Template groups and names
+- Channel information
+- Custom field groups and fields
+- Installed modules
+- File upload folders, paths, etc.
+- Member information
