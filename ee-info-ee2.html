@@ -132,23 +132,51 @@
         <table>
             <thead>
                 <tr>
+					<th>Field ID</th>
+					<th>Field Name</th>
                     <th>Field Group</th>
-                    <th>Field Name</th>
                     <th>Channel Title</th>
                     <th>Channel Name</th>
                 </tr>
             </thead>
             <tbody>
-                {exp:query sql="SELECT group_name, exp_field_groups.group_id, field_name, channel_title, channel_name FROM exp_field_groups, exp_channel_fields, exp_channels WHERE exp_field_groups.group_id = exp_channel_fields.group_id AND exp_field_groups.group_id = exp_channels.field_group"}
+                {exp:query sql="SELECT group_name, exp_field_groups.group_id, field_id, field_name, channel_title, channel_name FROM exp_field_groups, exp_channel_fields, exp_channels WHERE exp_field_groups.group_id = exp_channel_fields.group_id AND exp_field_groups.group_id = exp_channels.field_group"}
                 <tr>
-                    <td>{group_name}</td>
+					<td>{field_id}</td>
                     <td>{field_name}</td>
+                    <td>{group_name}</td>
                     <td>{channel_title}</td>
                     <td>{channel_name}</td>
                 </tr>
                 {/exp:query}
             </tbody>
         </table>
+
+
+
+		<h2>Categories</h2>
+		<table summary="Category IDs" cellpadding="5"> 
+			<thead>
+				<tr> 
+					<td><b>Category ID</b></td>
+					<td><b>Full Category Name</b></td>
+					<td><b>Category URL title</b></td> 
+					<td><b>Category parent ID</b></td> 
+				</tr>
+			</thead>
+			<tbody> 
+				{exp:query sql="SELECT cat_name, cat_url_title, cat_id, parent_id, group_id FROM exp_categories ORDER BY group_id"} 
+				<tr> 
+					<td>{cat_id}</td>
+					<td>{cat_name}</td>
+					<td>{cat_url_title}</td> 
+					<td>{parent_id}</td> 
+				</tr> 
+				{/exp:query}
+			</tbody>
+		</table> 
+
+
         
         <h2>Installed Modules</h2>
         <table>
@@ -211,6 +239,27 @@
                 </tbody>
             </thead>
         </table>
+
+
+
+        <h2>Global variables</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Variable</th>
+                    <th>Value</th>
+                </tr>
+                <tbody>
+{exp:query sql="SELECT variable_name, variable_data FROM exp_global_variables ORDER BY variable_name ASC"}
+<tr>
+        <td>{variable_name}</td>
+	<td>{variable_data}</td>
+</tr>
+{/exp:query}
+                </tbody>
+            </thead>
+        </table>
+
         
     </body>
 </html>
